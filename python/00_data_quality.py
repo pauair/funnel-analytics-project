@@ -85,6 +85,30 @@ missing_values["missing_percentage"] = (
 missing_values.sort_values("missing_values", ascending=False)
 
 # %% [markdown]
+# ## Validate session-user consistency
+#
+# A reliable session identifier should normally be associated with one user.
+# I will check whether any `user_session` value is linked to multiple
+# `user_id` values. This helps identify possible session identifier reuse or
+# collisions before calculating session-level funnel metrics.
+
+# %%
+session_user_counts = (
+    events.groupby("user_session")["user_id"]
+    .nunique()
+)
+
+session_user_conflicts = (
+    session_user_counts > 1
+)
+
+print(
+    f"Session identifiers linked to multiple users: {session_user_conflicts.sum():,}"
+)
+
+session_user_counts[session_user_conflicts].head()
+
+# %% [markdown]
 # ## Check event type values
 # 
 # The funnel is expected to contain three event types: product views, cart
