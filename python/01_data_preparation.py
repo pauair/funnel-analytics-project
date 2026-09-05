@@ -39,7 +39,7 @@ events_raw = pd.read_csv("../data/events.csv")
 events = events_raw.copy()
 
 print(f"Source file: {"../data/events.csv"}")
-print(f"Source rows: {len(events_raw):}")
+print(f"Source rows: {len(events_raw)}")
 
 # %% [markdown]
 # ## Remove fully duplicated records
@@ -57,7 +57,7 @@ events = events.drop_duplicates().copy()
 
 duplicates_removed = rows_before_deduplication - len(events)
 print(f"Fully duplicated rows removed: {duplicates_removed:}")
-print(f"Rows after deduplication: {len(events):}")
+print(f"Rows after deduplication: {len(events)}")
 
 # %% [markdown]
 # ## Parse event timestamps
@@ -75,7 +75,7 @@ events["event_time"] = pd.to_datetime(
 events["event_date"] = events["event_time"].dt.date
 events["event_hour"] = events["event_time"].dt.hour
 
-print(f"Invalid timestamps after conversion: {events['event_time'].isna().sum():,}")
+print(f"Invalid timestamps after conversion: {events['event_time'].isna().sum()}")
 events[["event_time", "event_date", "event_hour"]].head()
 
 # %% [markdown]
@@ -123,7 +123,7 @@ missing_sessions = events["user_session"].isna().sum()
 events = events.dropna(subset=["user_session"]).copy()
 
 print(f"Rows without a session identifier removed: {missing_sessions:}")
-print(f"Analysis-ready rows: {len(events):}")
+print(f"Analysis-ready rows: {len(events)}")
 
 # %% [markdown]
 # ## Validate the analysis-ready dataset
@@ -134,8 +134,8 @@ print(f"Analysis-ready rows: {len(events):}")
 # %%
 print(f"Final rows: {len(events):}")
 print(f"Final columns: {len(events.columns)}")
-print(f"Duplicate rows remaining: {events.duplicated().sum():}")
-print(f"Missing sessions remaining: {events['user_session'].isna().sum():}")
+print(f"Duplicate rows remaining: {events.duplicated().sum()}")
+print(f"Missing sessions remaining: {events['user_session'].isna().sum()}")
 
 print("\nEvent counts:")
 print(events["event_type"].value_counts(dropna=False))
