@@ -369,4 +369,57 @@ funnel_comparison["difference"] = (
 
 funnel_comparison
 
+# %% [markdown]
+# ## Export Tableau-ready session data
+# 
+# I will export a session-level dataset containing funnel indicators, event
+# timestamps, session activity, and funnel-order validation fields. This file
+# will be used as the main data source for the Tableau dashboard.
+
+# %%
+session_activity_export = (
+    events.groupby(["user_id", "user_session"], as_index=False)
+    .agg(
+        event_count=("event_type", "size"),
+        session_start=("event_time", "min"),
+        session_end=("event_time", "max")
+    )
+)
+
+session_activity_export["duration_minutes"] = (
+    session_activity_export["session_end"]
+    - session_activity_export["session_start"]
+).dt.total_seconds() / 60
+
+tableau_funnel_sessions = (
+    session_event_flags
+    .merge(
+        session_event_times,
+        on=["user_id", "user_session"],
+        how="left"
+    )
+    .merge(
+        session_activity_export,
+        on=["user_id", "user_session"],
+        how="left"
+    )
+)
+
+tableau_funnel_sessions["session_start_date"] = (
+    pd.to_datetime(
+        tableau_funnel_sessions["session_start"],
+        utc=True,
+        errors="coerce"
+    )
+    .dt.strftime("%Y-%m-%d")
+)
+
+tableau_funnel_sessions.to_csv(
+    "../data/processed/tableau_funnel_sessions.csv",
+    index=False
+)
+
+print("Tableau-ready file created.")
+print(f"Rows exported: {len(tableau_funnel_sessions)}")
+
 
