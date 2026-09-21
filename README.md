@@ -17,9 +17,9 @@
 
 ## Project Goal
 
-Develop an end-to-end data analytics project that simulates the work of a Data Analyst supporting an e-commerce product or growth team.
+Analyze the e-commerce customer journey to understand how users move through the conversion funnel, identify the main drop-off points before purchase, and uncover opportunities to improve conversion.
 
-The project focuses on understanding how users move through the online shopping journey, identifying where users drop off before purchase, and translating event-level data into actionable business insights.
+The project transforms event-level behavioral data into business-focused insights, with emphasis on funnel performance, user behavior, conversion patterns, and actionable recommendations for product and growth teams.
 
 
 ## Business Problem
